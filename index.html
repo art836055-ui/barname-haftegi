@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>برنامه درسی من</title>
+<style>
+:root{--bg:#f4f6fc;--card:#fff;--ink:#1c2435;--muted:#667085;--accent:#5758d6;--soft:#eeeeff;--line:#e4e7f0;--green:#16845b}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(140deg,#f2f4ff,#f8fbff);font-family:Tahoma,Arial,sans-serif;color:var(--ink);padding:16px}
+main{max-width:820px;margin:auto}.hero{background:linear-gradient(135deg,#5556d8,#8888f4);color:#fff;padding:23px;border-radius:23px;box-shadow:0 12px 30px #5556d822}
+h1{font-size:25px;margin:0 0 8px}.sub{font-size:14px;opacity:.9}.today{margin-top:16px;font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:19px;padding:18px;margin-top:15px;box-shadow:0 8px 24px #1a2a4b08}
+h2{font-size:18px;margin:0 0 14px}.week{display:grid;grid-template-columns:repeat(auto-fit,minmax(85px,1fr));gap:8px}
+button,select,input,textarea{font:inherit;border-radius:10px;border:1px solid var(--line);padding:10px;background:white;color:var(--ink);max-width:100%}
+button{cursor:pointer;background:var(--accent);border:0;color:white}.secondary{background:var(--soft);color:#4546b7}.daybtn{background:white;color:var(--ink);border:1px solid var(--line);padding:11px 5px}.daybtn.active{background:var(--soft);border-color:#7777e8;color:#4243b9;font-weight:bold}
+.subjects{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:9px}.subject{padding:13px;border-radius:13px;background:#f7f7ff;border:1px solid #e8e8ff;display:flex;align-items:center;gap:8px;font-weight:600}.num{width:27px;height:27px;border-radius:9px;background:#e6e6ff;color:#4b4cc3;display:grid;place-items:center;font-size:13px;flex-shrink:0}
+.muted{color:var(--muted);font-size:13px;line-height:1.8}.controls{display:flex;gap:8px;flex-wrap:wrap}.controls>*{flex:1}.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px}.formgrid input,.formgrid select,.formgrid textarea{width:100%}
+.task{display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid var(--line);border-radius:12px;margin-top:8px;background:#fff}.task input{margin-top:3px;accent-color:var(--green);width:18px;height:18px}.task.done .taskname{text-decoration:line-through;color:var(--muted)}.taskbody{flex:1;min-width:0}.taskname{font-weight:600;overflow-wrap:anywhere}.meta{font-size:12px;color:var(--muted);margin-top:5px}.delete{background:#fff0f0;color:#b42318;padding:7px 10px}
+.exam{border-right:4px solid #e4a23b;padding:10px 12px;border-radius:9px;background:#fffaf0;margin-top:8px}.exam strong{display:block}.empty{color:var(--muted);font-size:13px}.foot{text-align:center;color:var(--muted);font-size:12px;margin:18px 0}
+</style>
+</head>
+<body><main>
+<header class="hero"><h1>📚 برنامه درسی من</h1><div class="sub">کتاب‌های امروز، تکالیف و امتحان‌ها در یک جا</div><div class="today" id="todayText"></div></header>
+<section class="card"><h2>🗓️ برنامه هفتگی</h2><div class="week" id="week"></div></section>
+<section class="card"><h2 id="dayTitle">کتاب‌های امروز</h2><div class="subjects" id="subjects"></div><p class="muted" id="tomorrowText"></p></section>
+<section class="card"><h2>✅ تکالیف من</h2>
+<form id="taskForm"><div class="formgrid">
+<select id="taskDay" aria-label="روز درس"><option>شنبه</option><option>یکشنبه</option><option>دوشنبه</option><option>سه‌شنبه</option><option>چهارشنبه</option><option>پنجشنبه</option><option>جمعه</option></select>
+<select id="taskSubject" aria-label="کتاب"><option>ریاضی</option><option>فیزیک</option><option>آزمایشگاه</option><option>زبان</option><option>آمادگی</option><option>جغرافیا</option><option>ورزش</option><option>نگارش</option><option>دینی</option><option>دفاعی</option><option>شیمی</option><option>عربی</option><option>فارسی</option><option>هندسه</option><option>تفکر</option><option>سایر</option></select>
+<input id="taskText" placeholder="مثلاً حل تمرین صفحه ۲۰" required>
+<input id="taskDate" type="date" aria-label="مهلت انجام (اختیاری)">
+</div><p><button type="submit">افزودن تکلیف</button></p></form>
+<div id="taskList"></div><p class="controls"><button class="secondary" id="clearDone" type="button">پاک کردن تکالیف انجام‌شده</button></p>
+</section>
+<section class="card"><h2>📝 امتحان‌ها</h2>
+<form id="examForm"><div class="formgrid"><select id="examSubject" aria-label="درس امتحان"><option>ریاضی</option><option>فیزیک</option><option>شیمی</option><option>عربی</option><option>فارسی</option><option>زبان</option><option>هندسه</option><option>دینی</option><option>سایر</option></select><input id="examDate" type="date" required aria-label="تاریخ امتحان"><input id="examNote" placeholder="محدوده امتحان (اختیاری)"></div><p><button type="submit">ثبت امتحان</button></p></form><div id="examList"></div>
+</section>
+<section class="card"><h2>💾 نگهداری اطلاعات</h2><p class="muted">تکالیف و امتحان‌ها در همین مرورگر ذخیره می‌شوند. اگر اطلاعات مرورگر پاک شود یا سایت را در مرورگر دیگری باز کنی، ممکن است اطلاعات منتقل نشوند.</p><div class="controls"><button class="secondary" id="exportBtn" type="button">خروجی گرفتن از اطلاعات</button><button class="secondary" id="importBtn" type="button">وارد کردن اطلاعات</button><input id="importFile" type="file" accept=".json,application/json" hidden></div></section>
+<div class="foot">برنامه هفتگی از روی عکس تو وارد شده است.</div>
+</main>
+<script>
+const days=["شنبه","یکشنبه","دوشنبه","سه‌شنبه","چهارشنبه","پنجشنبه","جمعه"];
+const schedule=[["ریاضی","فیزیک","آزمایشگاه"],["زبان","آمادگی","جغرافیا"],["ورزش","نگارش","دینی"],["ریاضی","دفاعی","شیمی"],["عربی","فیزیک","شیمی"],["فارسی","هندسه","تفکر"],[]];
+const keyTasks="school_tasks_v2",keyExams="school_exams_v2";
+let tasks=load(keyTasks,[]),exams=load(keyExams,[]);
+function load(k,f){try{return JSON.parse(localStorage.getItem(k))||f}catch(e){return f}}
+function save(){localStorage.setItem(keyTasks,JSON.stringify(tasks));localStorage.setItem(keyExams,JSON.stringify(exams))}
+const now=new Date(),today=(now.getDay()+1)%7;
+document.getElementById("todayText").textContent="امروز: "+new Intl.DateTimeFormat("fa-IR-u-ca-persian",{weekday:"long",year:"numeric",month:"long",day:"numeric"}).format(now);
+const week=document.getElementById("week");
+days.forEach((d,i)=>{let b=document.createElement("button");b.className="daybtn";b.textContent=d;b.dataset.day=i;b.onclick=()=>renderDay(i);week.appendChild(b)});
+function renderDay(i){document.querySelectorAll(".daybtn").forEach(b=>b.classList.toggle("active",+b.dataset.day===i));document.getElementById("dayTitle").textContent="کتاب‌های "+days[i];let el=document.getElementById("subjects");el.innerHTML="";if(!schedule[i].length){el.innerHTML='<div class="empty">برای جمعه کتابی در برنامه ثبت نشده.</div>'}else schedule[i].forEach((s,n)=>{let d=document.createElement("div");d.className="subject";let num=document.createElement("span");num.className="num";num.textContent=n+1;let label=document.createElement("span");label.textContent=s;d.append(num,label);el.append(d)});document.getElementById("tomorrowText").textContent="فردا ("+days[(i+1)%7]+"): "+(schedule[(i+1)%7].join("، ")||"درسی ثبت نشده");document.getElementById("taskDay").value=days[i]}
+function renderTasks(){let el=document.getElementById("taskList");el.innerHTML="";if(!tasks.length){el.innerHTML='<div class="empty">هنوز تکلیفی اضافه نکرده‌ای.</div>';return}tasks.forEach((t,i)=>{let row=document.createElement("div");row.className="task"+(t.done?" done":"");let cb=document.createElement("input");cb.type="checkbox";cb.checked=t.done;cb.setAttribute("aria-label","انجام شد");cb.onchange=()=>{tasks[i].done=cb.checked;save();renderTasks()};let body=document.createElement("div");body.className="taskbody";let name=document.createElement("div");name.className="taskname";name.textContent=t.subject+" — "+t.text;let meta=document.createElement("div");meta.className="meta";meta.textContent="روز درس: "+t.day+(t.date?" • مهلت: "+t.date:"");body.append(name,meta);let del=document.createElement("button");del.className="delete";del.textContent="حذف";del.onclick=()=>{tasks.splice(i,1);save();renderTasks()};row.append(cb,body,del);el.append(row)})}
+function renderExams(){let el=document.getElementById("examList");el.innerHTML="";if(!exams.length){el.innerHTML='<div class="empty">هنوز امتحانی ثبت نکرده‌ای.</div>';return}exams.sort((a,b)=>a.date.localeCompare(b.date)).forEach((e,i)=>{let d=document.createElement("div");d.className="exam";let s=document.createElement("strong");s.textContent=e.subject+" — "+e.date;let p=document.createElement("span");p.className="muted";p.textContent=e.note||"محدوده‌ای ثبت نشده";let del=document.createElement("button");del.className="delete";del.textContent="حذف";del.style.marginTop="8px";del.onclick=()=>{exams.splice(i,1);save();renderExams()};d.append(s,p,document.createElement("br"),del);el.append(d)})}
+document.getElementById("taskForm").onsubmit=e=>{e.preventDefault();tasks.push({day:document.getElementById("taskDay").value,subject:document.getElementById("taskSubject").value,text:document.getElementById("taskText").value.trim(),date:document.getElementById("taskDate").value,done:false});save();e.target.reset();renderTasks()};
+document.getElementById("examForm").onsubmit=e=>{e.preventDefault();exams.push({subject:document.getElementById("examSubject").value,date:document.getElementById("examDate").value,note:document.getElementById("examNote").value.trim()});save();e.target.reset();renderExams()};
+document.getElementById("clearDone").onclick=()=>{tasks=tasks.filter(t=>!t.done);save();renderTasks()};
+document.getElementById("exportBtn").onclick=()=>{let blob=new Blob([JSON.stringify({tasks,exams},null,2)],{type:"application/json"});let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="barname-darsi-backup.json";a.click();URL.revokeObjectURL(a.href)};
+document.getElementById("importBtn").onclick=()=>document.getElementById("importFile").click();
+document.getElementById("importFile").onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!Array.isArray(d.tasks)||!Array.isArray(d.exams))throw Error();tasks=d.tasks;exams=d.exams;save();renderTasks();renderExams();alert("اطلاعات وارد شد.")}catch(err){alert("فایل معتبر نیست.")}e.target.value=""};
+renderDay(today);renderTasks();renderExams();
+</script></body></html>
